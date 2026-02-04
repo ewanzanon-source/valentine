@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine 💕</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Dancing Script', cursive;
+      overflow: hidden;
+      background: linear-gradient(
+        270deg,
+        #ffb3c6,
+        #ffc8dd,
+        #ffd6e0,
+        #ffb3c6
+      );
+      background-size: 600% 600%;
+      animation: bgMove 18s ease infinite;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.93);
+      padding: 45px;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+      z-index: 2;
+      max-width: 90%;
+    }
+
+    h1 {
+      color: #c9184a;
+      font-size: 2.7em;
+      margin-bottom: 30px;
+    }
+
+    button {
+      font-size: 1.5em;
+      padding: 16px 38px;
+      border: none;
+      border-radius: 45px;
+      cursor: pointer;
+      margin: 10px;
+      transition: 0.25s;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    #yes {
+      background: #e63946;
+      color: white;
+    }
+
+    #yes:hover {
+      background: #ff4d6d;
+      transform: scale(1.18);
+    }
+
+    #no {
+      background: #ff8fab;
+      color: white;
+      position: absolute;
+    }
+
+    #taunt {
+      position: absolute;
+      font-size: 1.2em;
+      color: #a4133c;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px 18px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      z-index: 3;
+      max-width: 260px;
+      text-align: center;
+    }
+
+    .floating {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .float {
+      position: absolute;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-20vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 id="question">Veux-tu être ma Valentine ? 💕</h1>
+    <button id="yes">Oui 💖</button>
+    <button id="no">Non</button>
+  </div>
+
+  <div id="taunt">
+    Non tu ne m'auras pas tu es obligé d'être ma Valentine grosse folle va
+  </div>
+
+  <div class="floating" id="floating"></div>
+
+  <script>
+    const noButton = document.getElementById("no");
+    const yesButton = document.getElementById("yes");
+    const question = document.getElementById("question");
+    const floating = document.getElementById("floating");
+    const taunt = document.getElementById("taunt");
+
+    function moveNo() {
+      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.left = x + "px";
+      noButton.style.top = y + "px";
+
+      taunt.style.left = (x + 15) + "px";
+      taunt.style.top = (y - 70) + "px";
+      taunt.style.opacity = 1;
+
+      setTimeout(() => {
+        taunt.style.opacity = 0;
+      }, 4000);
+    }
+
+    noButton.addEventListener("mouseover", moveNo);
+    noButton.addEventListener("mousedown", moveNo);
+
+    yesButton.addEventListener("click", () => {
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 120, 200, 120, 400]);
+      }
+
+      question.innerHTML =
+        "Wouhouuuuuu !!!!!<br><br>Alors à dans 2 semaine<br>ma petite esperluette d'amour 💖🌸";
+
+      yesButton.remove();
+      noButton.remove();
+      taunt.remove();
+
+      explosion();
+    });
+
+    function explosion() {
+      const symbols = ["💖", "🌸", "🌷", "💕"];
+      for (let i = 0; i < 220; i++) {
+        const el = document.createElement("div");
+        el.classList.add("float");
+        el.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.fontSize = Math.random() * 30 + 18 + "px";
+        el.style.animationDuration = Math.random() * 3 + 3 + "s";
+        floating.appendChild(el);
+
+        setTimeout(() => el.remove(), 6500);
+      }
+    }
+
+    // Pluie douce continue 💕
+    setInterval(() => {
+      const el = document.createElement("div");
+      el.classList.add("float");
+      el.innerHTML = Math.random() > 0.5 ? "💖" : "🌸";
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.fontSize = Math.random() * 22 + 14 + "px";
+      el.style.animationDuration = Math.random() * 5 + 6 + "s";
+      floating.appendChild(el);
+
+      setTimeout(() => el.remove(), 9000);
+    }, 450);
+  </script>
+
+</body>
+</html>
